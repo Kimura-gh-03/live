@@ -10,15 +10,7 @@ class LiveVenue extends Model
     /** @use HasFactory<\Database\Factories\LiveVenueFactory> */
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'prefecture',
-        'capacity',
-        'nearest_station',
-        'access',
-        'google_maps_url',
-        'toilet_layout',
-    ];
+    public $guarded = [];
 
     protected function casts(): array
     {
