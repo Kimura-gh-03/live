@@ -96,30 +96,26 @@ export default function Venues({ venues }: { venues: LiveVenue[] }) {
                                 </div>
 
                                 <div>
-                                    <h3 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">トイレ情報</h3>
-                                    <div className="grid gap-2">
-                                        <div className="flex items-center justify-between rounded-lg border px-4 py-3 text-sm">
-                                            <span className="text-slate-500">女性用</span>
-                                            <span className="font-medium text-slate-900 dark:text-white">
-                                                {selectedVenue.toilet_layout.female_locations}
-                                            </span>
-                                        </div>
-                                        <div className="flex items-center justify-between rounded-lg border px-4 py-3 text-sm">
-                                            <span className="text-slate-500">男性用</span>
-                                            <span className="font-medium text-slate-900 dark:text-white">
-                                                {selectedVenue.toilet_layout.male_locations}
-                                            </span>
-                                        </div>
-                                        {selectedVenue.toilet_layout.accessible_locations && (
-                                            <div className="flex items-center justify-between rounded-lg border px-4 py-3 text-sm">
-                                                <span className="text-slate-500">バリアフリー</span>
-                                                <span className="font-medium text-slate-900 dark:text-white">
-                                                    {selectedVenue.toilet_layout.accessible_locations}
-                                                </span>
+                                    <h3 className="mb-2 text-sm font-semibold text-slate-700 dark:text-slate-300">トイレ情報</h3>
+                                    <div className="rounded-lg border divide-y text-sm">
+                                        <div className={`grid gap-0 divide-x ${selectedVenue.toilet_layout.accessible_locations ? 'grid-cols-3' : 'grid-cols-2'}`}>
+                                            <div className="px-3 py-2">
+                                                <p className="text-xs text-slate-500">女性用</p>
+                                                <p className="mt-0.5 font-medium text-slate-900 dark:text-white">{selectedVenue.toilet_layout.female_locations}</p>
                                             </div>
-                                        )}
+                                            <div className="px-3 py-2">
+                                                <p className="text-xs text-slate-500">男性用</p>
+                                                <p className="mt-0.5 font-medium text-slate-900 dark:text-white">{selectedVenue.toilet_layout.male_locations}</p>
+                                            </div>
+                                            {selectedVenue.toilet_layout.accessible_locations && (
+                                                <div className="px-3 py-2">
+                                                    <p className="text-xs text-slate-500">バリアフリー</p>
+                                                    <p className="mt-0.5 font-medium text-slate-900 dark:text-white">{selectedVenue.toilet_layout.accessible_locations}</p>
+                                                </div>
+                                            )}
+                                        </div>
                                         {selectedVenue.toilet_layout.note && (
-                                            <p className="rounded-lg border border-amber-100 bg-amber-50 px-4 py-3 text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-400">
+                                            <p className="bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:bg-amber-950/30 dark:text-amber-400">
                                                 {selectedVenue.toilet_layout.note}
                                             </p>
                                         )}
