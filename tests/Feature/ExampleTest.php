@@ -14,5 +14,9 @@ class ExampleTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk();
+        $response->assertInertia(fn ($page) => $page
+            ->component('venues')
+            ->has('venues')
+        );
     }
 }
