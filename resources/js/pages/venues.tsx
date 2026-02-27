@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
 import { Head } from '@inertiajs/react';
 import { ExternalLink, MapPin, Star, Train, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 type ToiletLayout = {
@@ -43,22 +43,33 @@ type Hotel = { hotel: Array<{ hotelBasicInfo?: HotelBasicInfo }> };
 
 export default function Venues({ venues }: { venues: LiveVenue[] }) {
     const [selectedVenueId, setSelectedVenueId] = useState<string | null>(null);
+    const [loadedVenueId, setLoadedVenueId] = useState<string | null>(null);
     const [hotels, setHotels] = useState<Hotel[]>([]);
-    const [hotelsLoading, setHotelsLoading] = useState(false);
     const [hotelsError, setHotelsError] = useState<string | null>(null);
 
     const selectedVenue = venues.find((v) => v.id.toString() === selectedVenueId) ?? null;
+    const hotelsLoading = selectedVenueId !== null && selectedVenueId !== loadedVenueId;
+
+    const handleVenueChange = (venueId: string) => {
+        setSelectedVenueId(venueId);
+        setLoadedVenueId(null);
+        setHotels([]);
+        setHotelsError(null);
+    };
 
     useEffect(() => {
-        if (!selectedVenue) {
-            setHotels([]);
-            setHotelsError(null);
+        if (!selectedVenueId) {
             return;
         }
 
-        setHotelsLoading(true);
-        setHotelsError(null);
-        fetch(`/api/venues/${selectedVenue.id}/hotels`)
+        const venue = venues.find((v) => v.id.toString() === selectedVenueId);
+        if (!venue) {
+            return;
+        }
+
+        const controller = new AbortController();
+
+        fetch(`/api/venues/${venue.id}/hotels`, { signal: controller.signal })
             .then((res) => res.json())
             .then((data) => {
                 if (data.status === 'error') {
@@ -66,9 +77,17 @@ export default function Venues({ venues }: { venues: LiveVenue[] }) {
                 } else if (data.status === 'success') {
                     setHotels(data.hotels ?? []);
                 }
+                setLoadedVenueId(selectedVenueId);
             })
-            .finally(() => setHotelsLoading(false));
-    }, [selectedVenue?.id]);
+            .catch((err: unknown) => {
+                if (err instanceof Error && err.name !== 'AbortError') {
+                    setHotelsError('データの取得に失敗しました');
+                    setLoadedVenueId(selectedVenueId);
+                }
+            });
+
+        return () => controller.abort();
+    }, [selectedVenueId, venues]);
 
     return (
         <>
@@ -82,7 +101,7 @@ export default function Venues({ venues }: { venues: LiveVenue[] }) {
                 </header>
 
                 <main className="mx-auto max-w-5xl p-6 lg:p-8">
-                    <Select onValueChange={setSelectedVenueId}>
+                    <Select onValueChange={handleVenueChange}>
                         <SelectTrigger className="h-11 w-full">
                             <SelectValue placeholder="会場を選択してください" />
                         </SelectTrigger>
