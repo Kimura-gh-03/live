@@ -16,6 +16,8 @@ class LiveVenue extends Model
     {
         return [
             'toilet_layout' => 'array',
+            'latitude' => 'decimal:7',
+            'longitude' => 'decimal:7',
         ];
     }
 }

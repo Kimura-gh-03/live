@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'rakuten_travel' => [
+        'app_id' => env('RAKUTEN_TRAVEL_APP_ID'),
+        'access_key' => env('RAKUTEN_TRAVEL_ACCESS_KEY'),
+        'base_url' => env('RAKUTEN_TRAVEL_BASE_URL'),
+    ],
 ];

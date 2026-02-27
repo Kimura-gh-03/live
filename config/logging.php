@@ -127,6 +127,14 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'rakuten_travel' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/rakuten_travel.log'),
+            'level' => 'debug',
+            'days' => 14,
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];

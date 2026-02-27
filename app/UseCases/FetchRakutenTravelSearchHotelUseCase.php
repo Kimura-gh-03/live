@@ -1,0 +1,40 @@
+<?php
+
+namespace App\UseCases;
+
+use App\Exceptions\RakutenApiException;
+use App\Models\LiveVenue;
+use App\Services\RakutenTravelService;
+
+class FetchRakutenTravelSearchHotelUseCase
+{
+    public function __construct(private readonly RakutenTravelService $rakutenTravelService) {}
+
+    /**
+     * 楽天トラベルAPIを呼び出して、指定した緯度経度周辺のホテル情報を取得する
+     *
+     * @param  LiveVenue  $venue  ライブ会場モデル
+     * @return array<string, mixed> ホテル情報の配列
+     *
+     * @throws RakutenApiException API呼び出しに失敗した場合にスローされる例外
+     */
+    public function __invoke(LiveVenue $venue): array
+    {
+        try {
+            $hotels = $this->rakutenTravelService->searchHotels(
+                $venue->latitude,
+                $venue->longitude,
+            )['hotels'] ?? [];
+        } catch (RakutenApiException $e) {
+            return [
+                'status' => 'error',
+                'message' => $e->getSearchHotelsMessage(),
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'hotels' => $hotels,
+        ];
+    }
+}
