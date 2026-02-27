@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Head } from '@inertiajs/react';
 import { ExternalLink, MapPin, Star, Train, Users } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { getHotels } from '@/actions/App/Http/Controllers/TopController';
 
 type ToiletLayout = {
     female_locations: string;
@@ -59,7 +58,7 @@ export default function Venues({ venues }: { venues: LiveVenue[] }) {
 
         setHotelsLoading(true);
         setHotelsError(null);
-        fetch(getHotels(selectedVenue.id).url)
+        fetch(`/api/venues/${selectedVenue.id}/hotels`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.status === 'error') {
