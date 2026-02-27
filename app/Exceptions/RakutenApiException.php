@@ -9,7 +9,7 @@ class RakutenApiException extends Exception
     /**
      * Get the exception's context information.
      *
-     * @return array<string, mixed>
+     * @return string 例外のコンテキスト情報
      */
     public function context(): string
     {
