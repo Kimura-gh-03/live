@@ -168,7 +168,7 @@ export default function Venues({ venues }: { venues: LiveVenue[] }) {
 
                             {/* 周辺ホテル */}
                             <div>
-                                <h3 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">周辺ホテル</h3>
+                                <h3 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">周辺ホテル（半径1km圏内）</h3>
                                 {hotelsLoading ? (
                                     <div className="space-y-3">
                                         {[...Array(4)].map((_, i) => (
