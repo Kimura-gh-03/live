@@ -31,6 +31,6 @@ class TopController extends Controller
         LiveVenue $venue, 
         FetchRakutenTravelSearchHotelUseCase $useCase
     ): JsonResponse {
-        return response()->json($useCase->execute($venue));
+        return response()->json($useCase($venue));
     }
 }

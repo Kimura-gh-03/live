@@ -13,13 +13,12 @@ class FetchRakutenTravelSearchHotelUseCase
     /**
      * 楽天トラベルAPIを呼び出して、指定した緯度経度周辺のホテル情報を取得する
      *
-     * @param  float  $latitude 緯度
-     * @param  float  $longitude 経度
+     * @param  LiveVenue  $venue ライブ会場モデル
      * @return array<string, mixed> ホテル情報の配列
      *
      * @throws RakutenApiException API呼び出しに失敗した場合にスローされる例外
      */
-    public function execute(LiveVenue $venue): array
+    public function __invoke(LiveVenue $venue): array
     {
         try {
             $hotels = $this->rakutenTravelService->searchHotels(
