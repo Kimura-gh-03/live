@@ -6,7 +6,7 @@ use App\Exceptions\RakutenApiException;
 use App\Models\LiveVenue;
 use App\Services\RakutenTravelService;
 
-class FetchRakutenTravelSeachHotelUseCase
+class FetchRakutenTravelSearchHotelUseCase
 {
     public function __construct(private readonly RakutenTravelService $rakutenTravelService) {}
 
