@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Exceptions\RakutenApiException;
 use App\Models\LiveVenue;
 use App\Services\RakutenTravelService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class TopControllerTest extends TestCase
@@ -76,5 +78,34 @@ class TopControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertExactJson(['status' => 'success', 'hotels' => []]);
+    }
+
+    public static function apiErrorStatusProvider(): array
+    {
+        return [
+            '400 Bad Request'           => [400, 'エラーが発生しました。'],
+            '404 Not Found'             => [404, 'ホテルが見つかりませんでした。'],
+            '429 Too Many Requests'     => [429, 'エラーが発生しました。時間を置いて再度お試しください。'],
+            '500 Internal Server Error' => [500, 'サービスが利用できません。'],
+        ];
+    }
+
+    #[DataProvider('apiErrorStatusProvider')]
+    public function test_get_hotels_returns_error_when_api_throws_exception(int $statusCode, string $expectedMessage): void
+    {
+        $venue = LiveVenue::factory()->create();
+
+        $this->mock(RakutenTravelService::class)
+            ->shouldReceive('searchHotels')
+            ->once()
+            ->andThrow(new RakutenApiException(code: $statusCode));
+
+        $response = $this->getJson("/api/venues/{$venue->id}/hotels");
+
+        $response->assertStatus(200);
+        $response->assertExactJson([
+            'status' => 'error',
+            'message' => $expectedMessage,
+        ]);
     }
 }
