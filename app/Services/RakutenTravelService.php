@@ -16,8 +16,8 @@ class RakutenTravelService
     /**
      * 楽天トラベル施設検索API
      *
-     * @param  float  $latitude  緯度
-     * @param  float  $longitude  経度
+     * @param  string   $latitude  緯度
+     * @param  string   $longitude  経度
      * @return array APIレスポンスデータ
      *
      * @see https://webservice.rakuten.co.jp/documentation/simple-hotel-search
