@@ -13,7 +13,7 @@ class FetchRakutenTravelSearchHotelUseCase
     /**
      * 楽天トラベルAPIを呼び出して、指定した緯度経度周辺のホテル情報を取得する
      *
-     * @param  LiveVenue  $venue ライブ会場モデル
+     * @param  LiveVenue  $venue  ライブ会場モデル
      * @return array<string, mixed> ホテル情報の配列
      *
      * @throws RakutenApiException API呼び出しに失敗した場合にスローされる例外
@@ -28,7 +28,7 @@ class FetchRakutenTravelSearchHotelUseCase
         } catch (RakutenApiException $e) {
             return [
                 'status' => 'error',
-                'message' => $e->context(),
+                'message' => $e->getSearchHotelsMessage(),
             ];
         }
 
