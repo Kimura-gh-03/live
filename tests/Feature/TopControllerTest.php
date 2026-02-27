@@ -36,8 +36,10 @@ class TopControllerTest extends TestCase
             'pagingInfo' => ['recordCount' => 1, 'pageCount' => 1, 'page' => 1, 'first' => 1, 'last' => 1],
             'hotels' => [
                 [
-                    ['hotelBasicInfo' => ['hotelNo' => 136197, 'hotelName' => 'テストホテル']],
-                    ['hotelRatingInfo' => ['serviceAverage' => 4.3]],
+                    'hotel' => [
+                        ['hotelBasicInfo' => ['hotelNo' => 136197, 'hotelName' => 'テストホテル']],
+                        ['hotelRatingInfo' => ['serviceAverage' => 4.3]],
+                    ],
                 ],
             ],
         ];
@@ -51,7 +53,7 @@ class TopControllerTest extends TestCase
         $response = $this->getJson("/api/venues/{$venue->id}/hotels");
 
         $response->assertStatus(200);
-        $response->assertJsonPath('hotels.0.0.hotelBasicInfo.hotelName', 'テストホテル');
+        $response->assertJsonPath('hotels.0.hotel.0.hotelBasicInfo.hotelName', 'テストホテル');
     }
 
     public function test_get_hotels_returns_404_for_missing_venue(): void
@@ -73,6 +75,6 @@ class TopControllerTest extends TestCase
         $response = $this->getJson("/api/venues/{$venue->id}/hotels");
 
         $response->assertStatus(200);
-        $response->assertExactJson([]);
+        $response->assertExactJson(['status' => 'success', 'hotels' => []]);
     }
 }

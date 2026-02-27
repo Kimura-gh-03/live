@@ -24,7 +24,7 @@ class FetchRakutenTravelSearchHotelUseCase
             $hotels = $this->rakutenTravelService->searchHotels(
                 $venue->latitude,
                 $venue->longitude,
-            )['hotels'];
+            )['hotels'] ?? [];
         } catch (RakutenApiException $e) {
             return [
                 'status' => 'error',
@@ -34,7 +34,7 @@ class FetchRakutenTravelSearchHotelUseCase
 
         return [
             'status' => 'success',
-            'hotels' => $hotels ?? [],
+            'hotels' => $hotels,
         ];
     }
 }
