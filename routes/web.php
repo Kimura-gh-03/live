@@ -1,17 +1,8 @@
 <?php
 
-use App\Models\LiveVenue;
+use App\Http\Controllers\TopController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('venues', [
-        'venues' => LiveVenue::all(),
-    ]);
-})->name('home');
-
-Route::get('dashboard', function () {
-    return Inertia::render('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [TopController::class, 'index'])->name('home');
 
 require __DIR__.'/settings.php';
